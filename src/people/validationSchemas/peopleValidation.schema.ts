@@ -6,6 +6,6 @@ export const peopleValidationSchema = Joi.object({
     apellido: Joi.string().max(20).pattern(/^[A-Z][a-z]+/).required(),
     email: Joi.string().email().required(),
     telefono: Joi.string().pattern(/^[+]\d{2}[(]\d{3}[)]\d{3}-\d{3}/).required(),
-    sexo: Joi.string().valid('MALE', 'FEMALE').required(),
-    direcciones: Joi.array().items(Joi.string()),
+    sexo: Joi.string().valid('Masculino', 'Femenino').required(),
+    direcciones: Joi.array().items(Joi.string().required()).required(),
 });

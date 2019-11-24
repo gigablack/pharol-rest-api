@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, Res } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, Res, UsePipes } from '@nestjs/common';
 import { PeopleDTO } from './dto/people.dto';
 import { Response } from 'express';
 import { PeopleService } from './people.service';
+import { peopleValidationSchema } from './validationSchemas/peopleValidation.schema';
+import { JoiValidationPipe } from '../joi-validation.pipe';
 
 @Controller('people')
 export class PeopleController {
@@ -14,6 +16,7 @@ export class PeopleController {
     }
 
     @Post('/create')
+    @UsePipes(new JoiValidationPipe(peopleValidationSchema))
     async createPerson(@Body() person: PeopleDTO, @Res() res: Response) {
         // create a person
         return res.json(await this.peopleService.createPerson(person));
@@ -26,6 +29,7 @@ export class PeopleController {
     }
 
     @Put('/:id')
+    @UsePipes(new JoiValidationPipe(peopleValidationSchema))
     async updatePerson(@Param('id') id: string, @Body() person: PeopleDTO, @Res() res: Response) {
         // update person
         return res.json(await this.peopleService.updatePerson(id, person));
