@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { People } from './interfaces/people.interface';
 import { PeopleDTO } from './dto/people.dto';
+import { peopleValidationSchema } from './validationSchemas/peopleValidation.schema';
 
 @Injectable()
 export class PeopleService {
@@ -66,6 +67,38 @@ export class PeopleService {
                 message: 'Persona eliminada satisfactoriamente',
                 person: deletedPerson,
             };
+        } catch (error) {
+            return this.sendError(error);
+        }
+    }
+
+    async getPeopleBy(key: string, val: string) {
+        try {
+            const people = await this.personModel.find({ [key]: val });
+            if (people.length > 0) {
+                return people;
+            } else {
+                return {
+                    status: 'error',
+                    message: `No hay registros con ese ${key}`,
+                };
+            }
+        } catch (error) {
+            return this.sendError(error);
+        }
+    }
+
+    async getPersonBy(key: string, val: string) {
+        try {
+            const person = await this.personModel.findOne({ [key]: val });
+            if (person) {
+                return person;
+            } else {
+                return {
+                    status: 'error',
+                    message: `No hay registros con ese ${key}`,
+                };
+            }
         } catch (error) {
             return this.sendError(error);
         }
