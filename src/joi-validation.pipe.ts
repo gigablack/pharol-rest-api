@@ -3,7 +3,7 @@ import * as Joi from '@hapi/joi';
 
 @Injectable()
 export class JoiValidationPipe implements PipeTransform {
-  constructor(private readonly schema: Joi.ObjectSchema) {}
+  constructor(private readonly schema: Joi.Schema) {}
   transform(value: any, metadata: ArgumentMetadata) {
     const { error } = this.schema.validate(value);
     if (error && typeof(value) !== 'string') {
@@ -21,7 +21,7 @@ export class JoiValidationPipe implements PipeTransform {
           error.message = `${messagePrefix} debe ser una dirección de email válida.`;
           break;
         case 'telefono':
-          error.message = `${messagePrefix} debe ser un numero telefónico con el siguiente patron +56(123)456-789.`;
+          error.message = `${messagePrefix} debe ser un numero telefónico con el siguiente patron +56123456789.`;
           break;
         case 'sexo':
           error.message = `${messagePrefix} debe ser uno de los siguientes valores "Masculino", "Femenino"`;
